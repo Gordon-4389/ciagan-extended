@@ -34,6 +34,7 @@ def inference(generator, out_dir, data_loader, device_comp, num_classes = 1200):
 
         # output image
         img_out = transforms.ToPILImage()(im_gen[0].cpu()).convert("RGB")
+        print(output_id)
         img_out.save(join(out_dir, str(total_imgs).zfill(6) + '.jpg'))
         total_imgs+=1
     
