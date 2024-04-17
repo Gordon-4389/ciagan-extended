@@ -60,7 +60,7 @@ def run_inference(data_path='../dataset/celeba/', num_folders = -1, model_path =
     model.to(device_comp)
     print('Model is ready')
     
-    # inference(model, output_path, data_loader, device_comp=device_comp)
+    inference(model, output_path, data_loader, device_comp=device_comp)
 
 
 
