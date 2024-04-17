@@ -52,11 +52,11 @@ def run_inference(data_path='../dataset/celeba/', num_folders = -1, model_path =
     dataset_test = util_data.ImageDataset(root_dir=data_path, label_num=num_folders, transform_fnc=transforms.Compose([transforms.ToTensor()]), flag_sample=1, flag_augment = False)
     data_loader = torch.utils.data.DataLoader(dataset=dataset_test, batch_size=1, shuffle=False)
     # print(listdir(join(data_path,'orig','0')))
-    list_names = []
-    for i in range(num_folders):
-        # print(i)
-        list_names.extend(listdir(join(data_path,'clr',f'{i}')))
-    list_names.sort()
+    # list_names = []
+    # for i in range(num_folders):
+    #     # print(i)
+    #     list_names.extend(listdir(join(data_path,'clr',f'{i}')))
+    # list_names.sort()
 
     ##### PREPARING MODELS
     device_comp = util_func.set_comp_device(True)
@@ -66,7 +66,7 @@ def run_inference(data_path='../dataset/celeba/', num_folders = -1, model_path =
     model.to(device_comp)
     print('Model is ready')
     
-    inference(model, output_path, data_loader, device_comp=device_comp, data_path=data_path)
+    inference(model, output_path, data_loader, device_comp=device_comp)
 
 
 
