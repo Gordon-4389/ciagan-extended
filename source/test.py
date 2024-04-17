@@ -60,6 +60,7 @@ def run_inference(data_path='../dataset/celeba/', num_folders = -1, model_path =
         print(batch[2])
         print(batch[3])
         print(batch[4])
+        print(type(batch))
         break
 
     ##### PREPARING MODELS
