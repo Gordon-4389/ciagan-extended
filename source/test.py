@@ -14,14 +14,14 @@ from os import listdir
 import arch.arch_unet_flex as arch_gen
 import argparse
 
-def inference(generator, out_dir, data_loader, device_comp, num_classes = 1200, list_names=None):
+def inference(generator, out_dir, data_loader, device_comp, num_classes = 1200):
     total_imgs = 0
     for batch in data_loader:
         # prepare data
-        im_faces, im_lndm, im_msk, im_ind = [item[0].float().to(device_comp) for item in batch]
+        im_faces, im_lndm, im_msk, im_ind, filename = batch
 
         output_id = (int(im_ind[0].cpu())+1)%num_classes #chose next id
-        output_name = list_names[total_imgs]
+        output_name = filename.split('/')[-1]
         # print(list_names)
 
         labels_one_hot = np.zeros((1, num_classes))
@@ -66,7 +66,7 @@ def run_inference(data_path='../dataset/celeba/', num_folders = -1, model_path =
     model.to(device_comp)
     print('Model is ready')
     
-    inference(model, output_path, data_loader, device_comp=device_comp, list_names=list_names)
+    inference(model, output_path, data_loader, device_comp=device_comp, data_path=data_path)
 
 
 

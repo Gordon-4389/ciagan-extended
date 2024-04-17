@@ -89,18 +89,19 @@ class ImageDataset(torch.utils.data.Dataset):
                  int(center_h + crop_sz)))
 
         img_res = img_res.resize(self.img_shape, resample=Image.LANCZOS)
-        return self.transform_fnc(img_res)
+        return self.transform_fnc(img_res),  os.path.basename(im_path)  # Return both image tensor and file name
 
     def __getitem__(self, idx):
-        im_clr, im_lndm, im_msk, im_ind = [], [], [], []
+        im_clr, im_lndm, im_msk, im_ind, filenames = [], [], [], [], []
         if self.flag_sample==1:
             idx = [idx]
 
         for k_iter in range(self.flag_sample):
             self.crop_rnd = [random.random(), random.random(), random.random(), random.random()]
             im_clr_path = os.path.join(self.root_dir, self.root_img, str(self.im_label[idx[k_iter]]), self.im_paths[idx[k_iter]])
-            clr_img = self.load_img(im_clr_path)
+            clr_img, filename = self.load_img(im_clr_path)
             im_clr.append(clr_img)
+            filenames.append(filename)
 
             im_lndm_path = os.path.join(self.root_dir, self.root_lndm, str(self.im_label[idx[k_iter]]), self.im_paths[idx[k_iter]])
             lndm_img = self.load_img(im_lndm_path)
@@ -112,7 +113,7 @@ class ImageDataset(torch.utils.data.Dataset):
 
             im_ind.append(self.im_index[idx[k_iter]])
 
-        return im_clr, im_lndm, im_msk, im_ind
+        return im_clr, im_lndm, im_msk, im_ind, filenames # Return image tensors and file names
 
 
 def load_data(DATA_PATH, DATA_SET, WORKERS_NUM, BATCH_SIZE, IMG_SIZE, FLAG_DATA_AUGM, LABEL_NUM, mode_train=True):
