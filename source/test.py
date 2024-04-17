@@ -56,6 +56,7 @@ def run_inference(data_path='../dataset/celeba/', num_folders = -1, model_path =
     for i in range(num_folders):
         # print(i)
         list_names.extend(listdir(join(data_path,'clr',f'{i}')))
+    list_names.sort()
 
     ##### PREPARING MODELS
     device_comp = util_func.set_comp_device(True)
