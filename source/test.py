@@ -54,7 +54,9 @@ def run_inference(data_path='../dataset/celeba/', num_folders = -1, model_path =
     print(dataset_test[0])
     print(dataset_test[0][-1])
     data_loader = torch.utils.data.DataLoader(dataset=dataset_test, batch_size=1, shuffle=False)
-    print(list(data_loader)[0])
+    for batch in data_loader:
+        print(batch)
+        break
 
     ##### PREPARING MODELS
     # device_comp = util_func.set_comp_device(True)
