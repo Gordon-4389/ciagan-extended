@@ -49,10 +49,10 @@ def run_inference(data_path='../dataset/celeba/', num_folders = -1, model_path =
         num_folders = len(listdir(join(data_path,'lndm')))
 
     dataset_test = util_data.ImageDataset(root_dir=data_path, label_num=num_folders, transform_fnc=transforms.Compose([transforms.ToTensor()]), flag_sample=1, flag_augment = False)
-    print(dataset_test[-1][-1][0])
-    print(len(dataset_test), len(dataset_test[0]), len(dataset_test[0][0]))
-    print(dataset_test[0])
-    print(dataset_test[0][-1])
+    # print(dataset_test[-1][-1][0])
+    # print(len(dataset_test), len(dataset_test[0]), len(dataset_test[0][0]))
+    # print(dataset_test[0])
+    # print(dataset_test[0][-1])
     data_loader = torch.utils.data.DataLoader(dataset=dataset_test, batch_size=1, shuffle=False)
     for batch in data_loader:
         print(batch[0])
