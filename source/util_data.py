@@ -99,7 +99,7 @@ class ImageDataset(torch.utils.data.Dataset):
         for k_iter in range(self.flag_sample):
             self.crop_rnd = [random.random(), random.random(), random.random(), random.random()]
             im_clr_path = os.path.join(self.root_dir, self.root_img, str(self.im_label[idx[k_iter]]), self.im_paths[idx[k_iter]])
-            clr_img, filename = self.load_img(im_clr_path)
+            clr_img = self.load_img(im_clr_path)
             im_clr.append(clr_img)
             filenames.append(os.path.basename(im_clr_path)) # Get the final image
 
