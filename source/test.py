@@ -60,8 +60,8 @@ def run_inference(data_path='../dataset/celeba/', num_folders = -1, model_path =
     ##### PREPARING MODELS
     device_comp = util_func.set_comp_device(True)
     model = arch_gen.Generator()
-    # model.load_state_dict(torch.load(f"{model_path}.pth"))
-    model.load_state_dict(torch.load(f"{model_path}.pth", map_location=torch.device('cpu')))
+    model.load_state_dict(torch.load(f"{model_path}.pth"))
+    # model.load_state_dict(torch.load(f"{model_path}.pth", map_location=torch.device('cpu')))
     model.to(device_comp)
     print('Model is ready')
     
