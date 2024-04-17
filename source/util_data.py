@@ -108,7 +108,7 @@ class ImageDataset(torch.utils.data.Dataset):
             im_lndm.append(lndm_img)
 
             im_msk_path = os.path.join(self.root_dir, self.root_msk, str(self.im_label[idx[k_iter]]), self.im_paths[idx[k_iter]])
-            msk = ((1 - self.load_img(im_msk_path)) > 0.2)
+            msk = ((1 - self.load_img(im_msk_path)[0]) > 0.2)
             im_msk.append(msk)
 
             im_ind.append(self.im_index[idx[k_iter]])

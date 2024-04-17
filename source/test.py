@@ -18,10 +18,9 @@ def inference(generator, out_dir, data_loader, device_comp, num_classes = 1200):
     total_imgs = 0
     for batch in data_loader:
         # prepare data
-        im_faces, im_lndm, im_msk, im_ind, filename = batch
+        im_faces, im_lndm, im_msk, im_ind, output_name = batch
 
         output_id = (int(im_ind[0].cpu())+1)%num_classes #chose next id
-        output_name = filename.split('/')[-1]
         # print(list_names)
 
         labels_one_hot = np.zeros((1, num_classes))
