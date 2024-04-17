@@ -19,7 +19,7 @@ def inference(generator, out_dir, data_loader, device_comp, num_classes = 1200):
     for batch in data_loader:
         # prepare data
         im_faces, im_lndm, im_msk, im_ind = [item[0].float().to(device_comp) for item in batch[0:4]]
-        output_name = batch[-1][0]
+        output_name = batch[-1][0][0]
 
         output_id = (int(im_ind[0].cpu())+1)%num_classes #chose next id
         # print(list_names)
@@ -50,23 +50,15 @@ def run_inference(data_path='../dataset/celeba/', num_folders = -1, model_path =
         num_folders = len(listdir(join(data_path,'lndm')))
 
     dataset_test = util_data.ImageDataset(root_dir=data_path, label_num=num_folders, transform_fnc=transforms.Compose([transforms.ToTensor()]), flag_sample=1, flag_augment = False)
-    # print(dataset_test[-1][-1][0])
-    # print(len(dataset_test), len(dataset_test[0]), len(dataset_test[0][0]))
-    # print(dataset_test[0])
-    # print(dataset_test[0][-1])
     data_loader = torch.utils.data.DataLoader(dataset=dataset_test, batch_size=1, shuffle=False)
-    for batch in data_loader:
-        print([item[0].float().to(util_func.set_comp_device(True)) for item in batch[0:4]])
-        print(batch[-1][0][0])
-        break
 
     ##### PREPARING MODELS
-    # device_comp = util_func.set_comp_device(True)
-    # model = arch_gen.Generator()
-    # model.load_state_dict(torch.load(f"{model_path}.pth"))
-    # # model.load_state_dict(torch.load(f"{model_path}.pth", map_location=torch.device('cpu')))
-    # model.to(device_comp)
-    # print('Model is ready')
+    device_comp = util_func.set_comp_device(True)
+    model = arch_gen.Generator()
+    model.load_state_dict(torch.load(f"{model_path}.pth"))
+    # model.load_state_dict(torch.load(f"{model_path}.pth", map_location=torch.device('cpu')))
+    model.to(device_comp)
+    print('Model is ready')
     
     # inference(model, output_path, data_loader, device_comp=device_comp)
 
