@@ -1,3 +1,4 @@
 test_env/*
 source/*
 source/arch/*
+output/*

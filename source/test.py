@@ -14,13 +14,15 @@ from os import listdir
 import arch.arch_unet_flex as arch_gen
 import argparse
 
-def inference(generator, out_dir, data_loader, device_comp, num_classes = 1200):
+def inference(generator, out_dir, data_loader, device_comp, num_classes = 1200, list_names=None):
     total_imgs = 0
     for batch in data_loader:
         # prepare data
         im_faces, im_lndm, im_msk, im_ind = [item[0].float().to(device_comp) for item in batch]
 
         output_id = (int(im_ind[0].cpu())+1)%num_classes #chose next id
+        output_name = list_names[total_imgs]
+        # print(list_names)
 
         labels_one_hot = np.zeros((1, num_classes))
         labels_one_hot[0, output_id] = 1
@@ -34,8 +36,8 @@ def inference(generator, out_dir, data_loader, device_comp, num_classes = 1200):
 
         # output image
         img_out = transforms.ToPILImage()(im_gen[0].cpu()).convert("RGB")
-        print(output_id)
-        img_out.save(join(out_dir, str(total_imgs).zfill(6) + '.jpg'))
+        print(f"Image to be Anonymised: {output_name}")
+        img_out.save(join(out_dir, str(output_name[:-4]).zfill(6) + '.jpg'))
         total_imgs+=1
     
     print("Done.")
@@ -49,15 +51,21 @@ def run_inference(data_path='../dataset/celeba/', num_folders = -1, model_path =
 
     dataset_test = util_data.ImageDataset(root_dir=data_path, label_num=num_folders, transform_fnc=transforms.Compose([transforms.ToTensor()]), flag_sample=1, flag_augment = False)
     data_loader = torch.utils.data.DataLoader(dataset=dataset_test, batch_size=1, shuffle=False)
+    # print(listdir(join(data_path,'orig','0')))
+    list_names = []
+    for i in range(num_folders):
+        # print(i)
+        list_names.extend(listdir(join(data_path,'clr',f'{i}')))
 
     ##### PREPARING MODELS
     device_comp = util_func.set_comp_device(True)
     model = arch_gen.Generator()
-    model.load_state_dict(torch.load(model_path + '.pth'))
+    # model.load_state_dict(torch.load(f"{model_path}.pth"))
+    model.load_state_dict(torch.load(f"{model_path}.pth", map_location=torch.device('cpu')))
     model.to(device_comp)
     print('Model is ready')
     
-    inference(model, output_path, data_loader, device_comp=device_comp)
+    inference(model, output_path, data_loader, device_comp=device_comp, list_names=list_names)
 
 
 
