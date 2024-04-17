@@ -2,3 +2,4 @@ test_env/*
 source/*
 source/arch/*
 output/*
+Script_to_run.txt
