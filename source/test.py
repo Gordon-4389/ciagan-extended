@@ -22,7 +22,6 @@ def inference(generator, out_dir, data_loader, device_comp, num_classes = 1200):
         output_name = batch[-1][0][0]
 
         output_id = (int(im_ind[0].cpu())+1)%num_classes #chose next id
-        # print(list_names)
 
         labels_one_hot = np.zeros((1, num_classes))
         labels_one_hot[0, output_id] = 1
@@ -36,11 +35,11 @@ def inference(generator, out_dir, data_loader, device_comp, num_classes = 1200):
 
         # output image
         img_out = transforms.ToPILImage()(im_gen[0].cpu()).convert("RGB")
-        print(f"Image to be Anonymised: {output_name}")
+        print(f"Anonymizing Image: {output_name} \t", end='\r')
         img_out.save(join(out_dir, str(output_name[:-4]).zfill(6) + '.jpg'))
         total_imgs+=1
     
-    print("Done.")
+    print("\nDone.")
 
 
 
